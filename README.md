@@ -84,7 +84,8 @@ Este guia detalha como navegar pelas funcionalidades do **Sweet Manager** e quai
     * **Bombons:** Você pode escolher um bombom base (ex: Cereja) e optar por manter o chocolate padrão ou alterá-lo. Assim como os bolos, cada bombom é gerado a partir de um protótipo pré-configurado.
 * **Regras de Customização (Pattern Decorator):**
     * **Topo de Bolo:** Ao adicionar um topo, o sistema identifica a categoria: cobrado **R$ 5,00** para bolos e **R$ 1,00** para bombons.
-    * **Embalagem de Presente:** * Para **Bolos**, a cobrança é **unitária** (por item).
+    * **Embalagem de Presente:**
+        * Para **Bolos**, a cobrança é **unitária** (por item).
         * Para **Bombons**, a embalagem não é unitária, permitindo agrupar vários itens. **Exceção:** Se os bombons forem de sabores diferentes, o sistema permite a cobrança diferenciada para garantir a separação adequada. Ambas as embalagens custam **R$ 8,50**.
 * **Seleção de Entrega:**
     * **Delivery:** Você pode escolher a entrega por meio de delivery, custando uma taxa adicional de **R$ 15,00**.
