@@ -54,7 +54,7 @@ Utilize o Maven Wrapper incluído. Escolha o comando baseado no seu terminal:
   ```bash
   chmod +x mvnw && ./mvnw spring-boot:run
   ```
-  * **Caso algum problema com o maven wrapper ocorra, utilize o comando:**
+* **Caso algum problema com o maven wrapper ocorra, utilize o comando:**
   ```powershell
   \apache-maven-3.9.14\bin\mvn.cmd spring-boot:run
   ```
