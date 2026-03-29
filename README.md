@@ -20,56 +20,72 @@ Antes de começar, você precisará ter instalado em sua máquina:
 * Docker e Docker Compose
 * Maven (opcional, caso use o `mvnw` incluso)
 
+## ✅ Recomendações
+
+Instale a extensão "SQL Server (mssql)" caso utilize o Visual Studio Code:
+<img width="983" height="348" alt="screenshot" src="https://github.com/user-attachments/assets/ffcc40e5-eeb8-4edd-ba4d-ef19262a8e2b" />
+
 ## 🏗️ Instruções de Execução
 
-### 1. Configurar o Banco de Dados
-O projeto utiliza o SQL Server 2022 via Docker. Para subir a instância do banco:
+Siga os passos abaixo para rodar a aplicação localmente sem a necessidade de configurações manuais de SQL.
 
-1. Abra o terminal na raiz do projeto.
-2. Execute o comando:
+### 1. Subir o Banco de Dados (Docker)
+A criação do banco de dados `ConfeitariaDB` é totalmente automatizada via Docker.
+1. Certifique-se de que o Docker Desktop está aberto.
+2. No terminal, na pasta raiz do projeto, execute:
    ```bash
    docker-compose up -d
    ```
-   *Isso iniciará um container chamado `m47su-db` na porta `1433`*.
+   *Isso iniciará o servidor SQL Server e criará a base de dados automaticamente.*
 
-### 2. Configurar a Aplicação
-As configurações de conexão já estão pré-definidas no arquivo `src/main/resources/application.properties`:
-* **URL:** `jdbc:sqlserver://localhost:1433;databaseName=ConfeitariaDB`
-* **Usuário:** `sa`
-* **Senha:** `SenhaForte123!`
+### 2. Executar a Aplicação
+Utilize o Maven Wrapper incluído. Escolha o comando baseado no seu terminal:
 
-### 3. Executar o Projeto
-Com o banco de dados ativo, execute a aplicação utilizando o Maven Wrapper:
+* **Vá até a pasta raíz da aplicação após fazer o clone do GitHub:**
+  ```powershell
+  cd sweetmanager
+  ```
+  
+* **Windows (PowerShell ou CMD):**
+  ```powershell
+  .\mvnw spring-boot:run
+  ```
+* **Linux ou WSL (Terminal/Bash):**
+  ```bash
+  chmod +x mvnw && ./mvnw spring-boot:run
+  ```
+  * **Caso algum problema com o maven wrapper ocorra, utilize o comando:**
+  ```powershell
+  \apache-maven-3.9.14\bin\mvn.cmd spring-boot:run
+  ```
 
-```bash
-./mvnw spring-boot:run
-```
+A aplicação estará disponível em **`http://localhost:8081`**.
 
-A aplicação estará disponível em `http://localhost:8080`.
+## 👥 Usuários para Teste (Data Seeding)
 
-## 👥 Usuários para Teste
+Ao iniciar a aplicação, o sistema cria automaticamente as tabelas e os usuários de teste abaixo, caso ainda não existam no banco:
 
-Para validar as diferentes permissões de acesso (Usuário Comum vs. Administrador), utilize as credenciais abaixo:
-
-### **Usuário Comum**
-* **Nome:** Teste
-* **E-mail:** `teste@teste.com`
-* **Senha:** `123`
-
-### **Usuário Administrador (ADM)**
-* **Nome:** Admin
-* **E-mail:** `admin@sweet`
-* **Senha:** `admin123`
+| Perfil | E-mail | Senha |
+| :--- | :--- | :--- |
+| **Administrador** | `admin@sweet` | `admin123` |
+| **Usuário Comum** | `teste@teste.com` | `123` |
 
 ---
 
 ## 📂 Estrutura de Padrões de Projeto
 O sistema demonstra a aplicação prática de diversos Design Patterns:
-* **Prototype:** No registro e clonagem de produtos.
-* **State:** No gerenciamento do ciclo de vida dos pedidos.
-* **Bridge:** Na separação entre o pedido e a logística de entrega.
-* **Decorator:** Para adição dinâmica de customizações em produtos.
-* **Memento:** Para salvar e restaurar estados de produtos/rascunhos.
+* **Prototype:** Registro e clonagem de produtos (Bolos e Bombons).
+* **State:** Gerenciamento do ciclo de vida dos pedidos (Recebido ➔ Preparação ➔ Enviado ➔ Entregue).
+* **Bridge:** Separação entre a lógica do pedido e a logística de entrega (Delivery ou Retirada).
+* **Decorator:** Adição dinâmica de customizações como Topo de Bolo e Embalagens.
+* **Memento:** Sistema de rascunhos para salvar e restaurar estados de customização.
+
+---
+
+## 🛠️ Observações Técnicas
+
+* **Porta do Servidor:** Alterada para **8081** para evitar conflitos com outros serviços que utilizam a porta padrão 8080.
+* **Persistência:** O projeto utiliza `spring.jpa.hibernate.ddl-auto=update` para garantir que o esquema do banco esteja sempre sincronizado com as entidades Java.
 
 ---
 
