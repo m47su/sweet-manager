@@ -34,9 +34,9 @@ A criação do banco de dados `ConfeitariaDB` é totalmente automatizada via Doc
 1. Certifique-se de que o Docker Desktop está aberto.
    
 2. Certifique-se de estar na pasta raíz do projeto:
-  ```bash
-  cd sweetmanager
-  ```
+     ```bash
+     cd sweetmanager
+     ```
 3. No terminal, na pasta raiz do projeto, execute:
    ```bash
    docker-compose up -d
