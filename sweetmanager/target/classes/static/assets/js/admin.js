@@ -85,9 +85,29 @@ async function avancar(id) {
 }
 
 async function cancelar(id) {
-  if (confirm("Deseja realmente cancelar?")) {
+  const result = await Swal.fire({
+    title: "Deseja realmente cancelar?",
+    text: "Essa ação não poderá ser desfeita.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sim, cancelar",
+    cancelButtonText: "Voltar",
+    confirmButtonColor: "#ff4d6d",
+    cancelButtonColor: "#b0b0b0",
+    background: "#fff0f5",
+  });
+
+  if (result.isConfirmed) {
     const response = await fetch(`/pedidos/${id}/cancelar`, { method: "POST" });
+
     if (response.ok) {
+      await Swal.fire({
+        title: "Pedido cancelado!",
+        icon: "success",
+        confirmButtonColor: "#ff4d6d",
+        background: "#fff0f5",
+      });
+
       carregarPedidosAdmin();
       canalComunicacao.postMessage("atualizar_pedidos");
     }
@@ -100,7 +120,14 @@ async function cadastrarAdmin() {
   const senha = document.getElementById("novo-admin-senha").value;
 
   if (!nome || !email || !senha) {
-    alert("Por favor, preencha todos os campos para o novo administrador.");
+    Swal.fire({
+      title: "Campos obrigatórios",
+      text: "Por favor, preencha todos os campos para o novo administrador.",
+      icon: "warning",
+      confirmButtonColor: "#ff4d6d",
+      background: "#fff0f5",
+    });
+    return;
     return;
   }
 
@@ -114,17 +141,35 @@ async function cadastrarAdmin() {
     });
 
     if (response.ok) {
-      alert(`✅ Administrador ${nome} cadastrado com sucesso!`);
+      Swal.fire({
+        title: "Administrador cadastrado!",
+        text: `${nome} foi cadastrado com sucesso.`,
+        icon: "success",
+        confirmButtonColor: "#ff4d6d",
+        background: "#fff0f5",
+      });
       document.getElementById("novo-admin-nome").value = "";
       document.getElementById("novo-admin-email").value = "";
       document.getElementById("novo-admin-senha").value = "";
     } else {
       const erro = await response.text();
-      alert("Erro ao cadastrar: " + erro);
+      Swal.fire({
+        title: "Erro ao cadastrar",
+        text: erro,
+        icon: "error",
+        confirmButtonColor: "#ff4d6d",
+        background: "#fff0f5",
+      });
     }
   } catch (error) {
     console.error("Erro na requisição:", error);
-    alert("Erro de conexão com o servidor.");
+    Swal.fire({
+      title: "Erro de conexão",
+      text: "Não foi possível se comunicar com o servidor.",
+      icon: "error",
+      confirmButtonColor: "#ff4d6d",
+      background: "#fff0f5",
+    });
   }
 }
 const originalOnload = window.onload;

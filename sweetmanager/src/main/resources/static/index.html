@@ -186,34 +186,53 @@
         <div class="card resumo-card">
           <h3>Resumo do pedido</h3>
 
-        <ul id="lista-carrinho" class="cart-list">
-          <p class="empty-msg">Nenhum item adicionado ainda.</p>
-        </ul>
+          <ul id="lista-carrinho" class="cart-list">
+            <p class="empty-msg">Nenhum item adicionado ainda.</p>
+          </ul>
 
-        <hr />
+          <hr />
 
-        <div id="total-carrinho" style="font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; color: var(--primary);">
-          Total: R$ 0.00
-        </div>
-
-        <div class="form-group">
-          <label>Opção de Entrega:</label>
-          <div class="radio-group">
-            <label>
-              <input type="radio" name="entrega" value="RETIRADA" onchange="renderizarCarrinho()" checked />
-              Retirada
-            </label>
-
-            <label>
-              <input type="radio" name="entrega" value="DELIVERY" onchange="renderizarCarrinho()" />
-              Delivery (+R$15)
-            </label>
+          <div
+            id="total-carrinho"
+            style="
+              font-size: 1.2rem;
+              font-weight: bold;
+              margin-bottom: 15px;
+              color: var(--primary);
+            "
+          >
+            Total: R$ 0.00
           </div>
-        </div>
 
-        <button class="btn-finalizar" onclick="finalizarPedido()">
-          Finalizar compra
-        </button>
+          <div class="form-group">
+            <label>Opção de Entrega:</label>
+            <div class="radio-group">
+              <label>
+                <input
+                  type="radio"
+                  name="entrega"
+                  value="RETIRADA"
+                  onchange="renderizarCarrinho()"
+                  checked
+                />
+                Retirada
+              </label>
+
+              <label>
+                <input
+                  type="radio"
+                  name="entrega"
+                  value="DELIVERY"
+                  onchange="renderizarCarrinho()"
+                />
+                Delivery (+R$15)
+              </label>
+            </div>
+          </div>
+
+          <button class="btn-finalizar" onclick="finalizarPedido()">
+            Finalizar compra
+          </button>
         </div>
 
         <div class="card pedidos-card">
@@ -265,7 +284,7 @@
     <footer class="site-footer">
       <p>Copyright © 2026 Todos os direitos reservados - SweetManager</p>
     </footer>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="assets/js/index.js"></script>
   </body>
 </html>

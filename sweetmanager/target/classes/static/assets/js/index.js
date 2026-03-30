@@ -41,7 +41,12 @@ async function salvarEstadoAtual() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(estado),
   });
-  if (response.ok) alert("Rascunho completo guardado!");
+  if (response.ok)
+    Swal.fire({
+      title: "Rascunho salvo!",
+      icon: "success",
+      confirmButtonColor: "#ff4d6d",
+    });
 }
 
 async function restaurarUltimoEstado() {
@@ -70,7 +75,11 @@ async function restaurarUltimoEstado() {
     });
 
     atualizarDescricao();
-    alert("Rascunho restaurado!");
+    Swal.fire({
+      title: "Restaurado!",
+      icon: "success",
+      confirmButtonColor: "#ff4d6d",
+    });
   }
 }
 
@@ -198,12 +207,12 @@ function adicionarAoCarrinho() {
 function renderizarCarrinho() {
   const lista = document.getElementById("lista-carrinho");
   const totalElement = document.getElementById("total-carrinho");
-  
+
   let totalDaCompra = 0;
 
   if (itensPedido.length === 0) {
     lista.innerHTML = '<p class="empty-msg">Nenhum item adicionado ainda.</p>';
-    if(totalElement) totalElement.innerHTML = "Total: R$ 0.00";
+    if (totalElement) totalElement.innerHTML = "Total: R$ 0.00";
     return;
   }
 
@@ -211,24 +220,24 @@ function renderizarCarrinho() {
     .map((it, idx) => {
       const info = catalogoGlobal[it.base] || {};
       const nomeBase = info.nome || it.base;
-      
+
       let precoUnitario = parseFloat(info.preco || 0);
       let valorEmbalagem = 0;
 
-      it.adicionais.forEach(adc => {
-         if (adc.tipo === "TOPO") {
-            const valorTopo = it.tipoDocura === "BOMBOM" ? 1.0 : 5.0;
-            precoUnitario += valorTopo; 
-         } else if (adc.tipo === "EMBALAGEM") {
-            if (it.tipoDocura === "BOLO") {
-                valorEmbalagem += 8.50 * it.quantidade; 
-            } else if (it.tipoDocura === "BOMBOM") {
-                valorEmbalagem += 8.50; 
-            }
-         }
+      it.adicionais.forEach((adc) => {
+        if (adc.tipo === "TOPO") {
+          const valorTopo = it.tipoDocura === "BOMBOM" ? 1.0 : 5.0;
+          precoUnitario += valorTopo;
+        } else if (adc.tipo === "EMBALAGEM") {
+          if (it.tipoDocura === "BOLO") {
+            valorEmbalagem += 8.5 * it.quantidade;
+          } else if (it.tipoDocura === "BOMBOM") {
+            valorEmbalagem += 8.5;
+          }
+        }
       });
 
-      let subtotalItem = (precoUnitario * it.quantidade) + valorEmbalagem;
+      let subtotalItem = precoUnitario * it.quantidade + valorEmbalagem;
       totalDaCompra += subtotalItem;
 
       return `
@@ -244,14 +253,14 @@ function renderizarCarrinho() {
     })
     .join("");
 
-    const opcaoEntrega = document.querySelector('input[name="entrega"]:checked');
-    if (opcaoEntrega && opcaoEntrega.value === "DELIVERY") {
-        totalDaCompra += 15.0;
-    }
+  const opcaoEntrega = document.querySelector('input[name="entrega"]:checked');
+  if (opcaoEntrega && opcaoEntrega.value === "DELIVERY") {
+    totalDaCompra += 15.0;
+  }
 
-    if(totalElement) {
-        totalElement.innerHTML = `Total: R$ ${totalDaCompra.toFixed(2)}`;
-    }
+  if (totalElement) {
+    totalElement.innerHTML = `Total: R$ ${totalDaCompra.toFixed(2)}`;
+  }
 }
 
 function removerDoCarrinho(index) {
@@ -261,7 +270,13 @@ function removerDoCarrinho(index) {
 
 async function finalizarPedido() {
   if (itensPedido.length === 0) {
-    alert("Adicione pelo menos um item ao seu carrinho!");
+    Swal.fire({
+      icon: "error",
+      title: "Carrinho vazio 😢",
+      text: "Adicione pelo menos um item antes de finalizar seu pedido!",
+      confirmButtonColor: "#ff4d6d",
+      background: "#fff0f5",
+    });
     return;
   }
 
@@ -282,13 +297,24 @@ async function finalizarPedido() {
     });
 
     if (response.ok) {
-      alert("✨ Pedido Finalizado! Estamos preparando sua doçura.");
+      Swal.fire({
+        title: "Pedido realizado!",
+        text: "Estamos preparando sua doçura com carinho 🍰",
+        icon: "success",
+        confirmButtonColor: "#ff4d6d",
+        background: "#fff0f5",
+      });
       itensPedido = [];
       renderizarCarrinho();
       carregarMeusPedidos();
       canalComunicacao.postMessage("atualizar_pedidos");
     } else {
-      alert("Ocorreu um erro ao processar seu pedido.");
+      Swal.fire({
+        title: "Ops!",
+        text: "Algo deu errado ao processar seu pedido.",
+        icon: "error",
+        confirmButtonColor: "#d33",
+      });
     }
   } catch (error) {
     console.error("Erro ao finalizar pedido:", error);
@@ -296,26 +322,44 @@ async function finalizarPedido() {
 }
 
 async function cancelarPedido(idPedido) {
-    if (!confirm(`Tem certeza que deseja cancelar o pedido #${idPedido}?`)) {
-        return;
-    }
+  const result = await Swal.fire({
+    title: "Tem certeza?",
+    text: "Você não poderá reverter isso!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#ff4d6d",
+    cancelButtonColor: "#aaa",
+    confirmButtonText: "Sim, cancelar!",
+    cancelButtonText: "Voltar",
+  });
 
-    try {
-        const response = await fetch(`/pedidos/${idPedido}/cancelar`, {
-            method: 'POST'
-        });
+  if (!result.isConfirmed) return;
 
-        if (response.ok) {
-            alert("Pedido cancelado com sucesso!");
-            carregarMeusPedidos(); 
-            canalComunicacao.postMessage("atualizar_pedidos"); 
-        } else {
-            alert("Não foi possível cancelar. O pedido pode já ter sido enviado.");
-        }
-    } catch (error) {
-        console.error("Erro ao cancelar o pedido:", error);
-        alert("Ocorreu um erro ao comunicar com o servidor.");
+  try {
+    const response = await fetch(`/pedidos/${idPedido}/cancelar`, {
+      method: "POST",
+    });
+
+    if (response.ok) {
+      Swal.fire({
+        title: "Cancelado!",
+        text: "Seu pedido foi cancelado.",
+        icon: "success",
+        confirmButtonColor: "#ff4d6d",
+      });
+      carregarMeusPedidos();
+      canalComunicacao.postMessage("atualizar_pedidos");
+    } else {
+      Swal.fire({
+        title: "Não foi possível",
+        text: "O pedido pode já ter sido enviado.",
+        icon: "error",
+      });
     }
+  } catch (error) {
+    console.error("Erro ao cancelar o pedido:", error);
+    alert("Ocorreu um erro ao comunicar com o servidor.");
+  }
 }
 
 async function carregarMeusPedidos() {
@@ -326,22 +370,30 @@ async function carregarMeusPedidos() {
       const pedidos = await response.json();
 
       if (pedidos.length === 0) {
-        listaElement.innerHTML = '<p class="empty-msg">Você ainda não tem pedidos.</p>';
+        listaElement.innerHTML =
+          '<p class="empty-msg">Você ainda não tem pedidos.</p>';
         return;
       }
 
       listaElement.innerHTML = pedidos
         .reverse()
         .map((p) => {
-          const resumoItens = p.itens && p.itens.length > 0
-              ? p.itens.map((item) => `${item.quantidade}x ${item.descricao}`).join("; ")
+          const resumoItens =
+            p.itens && p.itens.length > 0
+              ? p.itens
+                  .map((item) => `${item.quantidade}x ${item.descricao}`)
+                  .join("; ")
               : "Sem detalhes disponíveis";
 
           const statusLimpo = p.status ? p.status.trim().toUpperCase() : "";
 
           let btnCancelar = "";
-          if (statusLimpo !== "ENVIADO" && statusLimpo !== "ENTREGUE" && statusLimpo !== "CANCELADO") {
-              btnCancelar = `
+          if (
+            statusLimpo !== "ENVIADO" &&
+            statusLimpo !== "ENTREGUE" &&
+            statusLimpo !== "CANCELADO"
+          ) {
+            btnCancelar = `
                 <button onclick="cancelarPedido(${p.id})" 
                         style="margin-top: 10px; background: none; border: 1px solid #e74c3c; color: #e74c3c; padding: 4px 8px; border-radius: var(--radius-pill); cursor: pointer; width: 15%;">
                     Cancelar Pedido
@@ -362,6 +414,7 @@ async function carregarMeusPedidos() {
     }
   } catch (error) {
     console.error("Erro ao carregar pedidos:", error);
-    listaElement.innerHTML = '<p class="empty-msg">Erro ao carregar pedidos.</p>';
+    listaElement.innerHTML =
+      '<p class="empty-msg">Erro ao carregar pedidos.</p>';
   }
 }

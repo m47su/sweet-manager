@@ -257,7 +257,24 @@ input[type="radio"] {
 .btn-add:hover {
   background: var(--brown-dark);
 }
+.btn-cancelar {
+  min-width: 120px;
+  padding: 6px 14px;
 
+  border-radius: 999px;
+  border: 1.5px solid #e86a92;
+
+  background: transparent;
+  color: #e86a92;
+
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  white-space: nowrap;
+  cursor: pointer;
+}
 .acoes-secundarias {
   display: flex;
   gap: 8px;
@@ -375,22 +392,22 @@ hr {
 }
 
 .status-badge {
-  width: 120px;
-  height: 30px;
+  min-width: 120px;
+  padding: 6px 14px;
   border: none;
-  border-radius: 20px;
+  border-radius: 999px;
+
+  display: inline-flex;
   align-items: center;
-  display: flex;
   justify-content: center;
-  color: #f5f7f4;
-  background-color: #E86A92;
+
+  color: #fff;
+  background-color: #e86a92;
+
+  font-size: 0.8rem;
+  white-space: nowrap;
 }
 
-.status-badge:hover {
-  background-color: #f63f83;
-}
-
-/* LOJA / MAPA */
 .loja-section {
   position: relative;
   background: var(--bg-light);
