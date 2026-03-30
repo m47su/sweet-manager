@@ -374,6 +374,22 @@ hr {
   background: var(--pink);
 }
 
+.status-badge {
+  width: 120px;
+  height: 30px;
+  border: none;
+  border-radius: 20px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  color: #f5f7f4;
+  background-color: #E86A92;
+}
+
+.status-badge:hover {
+  background-color: #f63f83;
+}
+
 /* LOJA / MAPA */
 .loja-section {
   position: relative;
