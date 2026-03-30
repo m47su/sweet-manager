@@ -564,7 +564,7 @@ hr {
 
   z-index: 1;
 }
-
+/*RESPONSIVIDADE*/
 @media (max-width: 900px) {
   .loja-box {
     grid-template-columns: 1fr;

@@ -12,14 +12,14 @@ body {
   height: 100vh;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(45deg, rgba(75, 33, 33, 0.13), rgba(0, 0, 0, 0.7)),
+  background:
+    linear-gradient(45deg, rgba(75, 33, 33, 0.13), rgba(0, 0, 0, 0.7)),
     url("../img/login.jpg");
   background-size: cover;
   background-position: center;
   overflow: hidden;
 }
 
-/* PÁGINA DE LOGIN E CADASTRO */
 .container {
   position: relative;
   height: 600px;
@@ -65,7 +65,7 @@ body {
   transform: translateX(-50%);
   height: 0.8rem;
   width: 7rem;
-  background: #FF9E39;
+  background: #ff9e39;
   border-radius: 1rem;
   clip-path: polygon(0 0, 0% 100%, 100% 0);
 }
@@ -135,7 +135,7 @@ form {
 }
 
 .forgot-pass a:hover {
-  color: #FF9E39;
+  color: #ff9e39;
 }
 
 .button-area {
@@ -155,7 +155,7 @@ button {
   cursor: pointer;
   border: 2px solid transparent;
   border-radius: 2rem;
-  background: #FF448A;
+  background: #ff448a;
   transition: all 0.3s ease;
 }
 
@@ -186,7 +186,7 @@ button:hover {
 }
 
 .form-toggle-area p span:hover {
-  color: #FF9E39;
+  color: #ff9e39;
 }
 
 @media screen and (max-width: 360px) {
@@ -215,4 +215,3 @@ button:hover {
     font-size: 0.9rem;
   }
 }
-

@@ -1,82 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <link rel="stylesheet" href="assets/css/login.css" />
     <title>Sweet Manager - Entrar</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="login-wrap active" id="login-card">
-            <div class="title"><h1>Entrar</h1></div>
-            <form method="POST" action="/login">
-                <div class="input-area">
-                    <input type="email" name="username" id="email-login" required>
-                    <label>E-mail</label>
-                </div>
-                <div class="input-area">
-                    <input type="password" name="password" id="password-login" required>
-                    <label>Senha</label>
-                </div>
-                <div class="button-area">
-                    <button type="submit">Entrar</button>
-                </div>
-            </form>
-            <div class="form-toggle-area">
-                <p>Não tem uma conta? <span onclick="toggleCards()">Inscreva-se</span></p>
-            </div>
+      <div class="login-wrap active" id="login-card">
+        <div class="title"><h1>Entrar</h1></div>
+        <form method="POST" action="/login">
+          <div class="input-area">
+            <input type="email" name="username" id="email-login" required />
+            <label>E-mail</label>
+          </div>
+          <div class="input-area">
+            <input
+              type="password"
+              name="password"
+              id="password-login"
+              required
+            />
+            <label>Senha</label>
+          </div>
+          <div class="button-area">
+            <button type="submit">Entrar</button>
+          </div>
+        </form>
+        <div class="form-toggle-area">
+          <p>
+            Não tem uma conta? <span onclick="toggleCards()">Inscreva-se</span>
+          </p>
         </div>
+      </div>
 
-        <div class="signup-wrap" id="signup-card">
-            <div class="title"><h1>Se inscreva</h1></div>
-            <form onsubmit="registrar(event)">
-                <div class="input-area">
-                    <input type="text" id="nome-reg" required>
-                    <label>Nome</label>
-                </div>
-                <div class="input-area">
-                    <input type="email" id="email-reg" required>
-                    <label>Email</label>
-                </div>
-                <div class="input-area">
-                    <input type="password" id="password-reg" required>
-                    <label>Senha</label>
-                </div>
-                <div class="button-area">
-                    <button type="submit">Cadastrar</button>
-                </div>
-            </form>
-            <div class="form-toggle-area">
-                <p>Já possui uma conta? <span onclick="toggleCards()">Entre agora</span></p>
-            </div>
+      <div class="signup-wrap" id="signup-card">
+        <div class="title"><h1>Se inscreva</h1></div>
+        <form onsubmit="registrar(event)">
+          <div class="input-area">
+            <input type="text" id="nome-reg" required />
+            <label>Nome</label>
+          </div>
+          <div class="input-area">
+            <input type="email" id="email-reg" required />
+            <label>Email</label>
+          </div>
+          <div class="input-area">
+            <input type="password" id="password-reg" required />
+            <label>Senha</label>
+          </div>
+          <div class="button-area">
+            <button type="submit">Cadastrar</button>
+          </div>
+        </form>
+        <div class="form-toggle-area">
+          <p>
+            Já possui uma conta?
+            <span onclick="toggleCards()">Entre agora</span>
+          </p>
         </div>
+      </div>
     </div>
 
     <script>
-        function toggleCards() {
-            document.getElementById('login-card').classList.toggle('active');
-            document.getElementById('signup-card').classList.toggle('active');
+      function toggleCards() {
+        document.getElementById("login-card").classList.toggle("active");
+        document.getElementById("signup-card").classList.toggle("active");
+      }
+
+      async function registrar(event) {
+        event.preventDefault();
+        const usuario = {
+          nome: document.getElementById("nome-reg").value,
+          email: document.getElementById("email-reg").value,
+          senha: document.getElementById("password-reg").value,
+        };
+
+        const response = await fetch("/usuarios/cadastrar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(usuario),
+        });
+
+        if (response.ok) {
+          alert("Conta criada! Agora é só entrar.");
+          toggleCards();
         }
-
-        async function registrar(event) {
-            event.preventDefault();
-            const usuario = {
-                nome: document.getElementById('nome-reg').value,
-                email: document.getElementById('email-reg').value,
-                senha: document.getElementById('password-reg').value
-            };
-
-            const response = await fetch('/usuarios/cadastrar', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(usuario)
-            });
-
-            if (response.ok) {
-                alert("Conta criada! Agora é só entrar.");
-                toggleCards(); 
-            }
-        }
+      }
     </script>
-</body>
+  </body>
 </html>
