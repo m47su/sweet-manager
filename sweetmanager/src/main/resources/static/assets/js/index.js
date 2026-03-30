@@ -197,26 +197,61 @@ function adicionarAoCarrinho() {
 
 function renderizarCarrinho() {
   const lista = document.getElementById("lista-carrinho");
+  const totalElement = document.getElementById("total-carrinho");
+  
+  let totalDaCompra = 0;
 
   if (itensPedido.length === 0) {
     lista.innerHTML = '<p class="empty-msg">Nenhum item adicionado ainda.</p>';
+    if(totalElement) totalElement.innerHTML = "Total: R$ 0.00";
     return;
   }
 
   lista.innerHTML = itensPedido
     .map((it, idx) => {
-      const nomeBase = catalogoGlobal[it.base]?.nome || it.base;
+      const info = catalogoGlobal[it.base] || {};
+      const nomeBase = info.nome || it.base;
+      
+      let precoUnitario = parseFloat(info.preco || 0);
+      let valorEmbalagem = 0;
+
+      it.adicionais.forEach(adc => {
+         if (adc.tipo === "TOPO") {
+            const valorTopo = it.tipoDocura === "BOMBOM" ? 1.0 : 5.0;
+            precoUnitario += valorTopo; 
+         } else if (adc.tipo === "EMBALAGEM") {
+            if (it.tipoDocura === "BOLO") {
+                valorEmbalagem += 8.50 * it.quantidade; 
+            } else if (it.tipoDocura === "BOMBOM") {
+                valorEmbalagem += 8.50; 
+            }
+         }
+      });
+
+      let subtotalItem = (precoUnitario * it.quantidade) + valorEmbalagem;
+      totalDaCompra += subtotalItem;
+
       return `
             <li class="cart-item">
                 <div>
                     <span>${it.quantidade}x</span> ${nomeBase} 
                     <small style="display:block; color:#777">(${it.tipoDocura === "BOLO" ? it.recheio : it.chocolate})</small>
+                    <small style="display:block; font-weight:bold; color:#555">R$ ${subtotalItem.toFixed(2)}</small>
                 </div>
-                <button onclick="removerDoCarrinho(${idx})" style="background:none; color:#e74c3c; font-size:1.2rem">✕</button>
+                <button onclick="removerDoCarrinho(${idx})" style="background:none; color:#e74c3c; font-size:1.2rem; cursor:pointer">✕</button>
             </li>
         `;
     })
     .join("");
+
+    const opcaoEntrega = document.querySelector('input[name="entrega"]:checked');
+    if (opcaoEntrega && opcaoEntrega.value === "DELIVERY") {
+        totalDaCompra += 15.0;
+    }
+
+    if(totalElement) {
+        totalElement.innerHTML = `Total: R$ ${totalDaCompra.toFixed(2)}`;
+    }
 }
 
 function removerDoCarrinho(index) {
@@ -260,6 +295,29 @@ async function finalizarPedido() {
   }
 }
 
+async function cancelarPedido(idPedido) {
+    if (!confirm(`Tem certeza que deseja cancelar o pedido #${idPedido}?`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/pedidos/${idPedido}/cancelar`, {
+            method: 'POST'
+        });
+
+        if (response.ok) {
+            alert("Pedido cancelado com sucesso!");
+            carregarMeusPedidos(); 
+            canalComunicacao.postMessage("atualizar_pedidos"); 
+        } else {
+            alert("Não foi possível cancelar. O pedido pode já ter sido enviado.");
+        }
+    } catch (error) {
+        console.error("Erro ao cancelar o pedido:", error);
+        alert("Ocorreu um erro ao comunicar com o servidor.");
+    }
+}
+
 async function carregarMeusPedidos() {
   const listaElement = document.getElementById("lista-pedidos");
   try {
@@ -268,20 +326,27 @@ async function carregarMeusPedidos() {
       const pedidos = await response.json();
 
       if (pedidos.length === 0) {
-        listaElement.innerHTML =
-          '<p class="empty-msg">Você ainda não tem pedidos.</p>';
+        listaElement.innerHTML = '<p class="empty-msg">Você ainda não tem pedidos.</p>';
         return;
       }
 
       listaElement.innerHTML = pedidos
         .reverse()
         .map((p) => {
-          const resumoItens =
-            p.itens && p.itens.length > 0
-              ? p.itens
-                  .map((item) => `${item.quantidade}x ${item.descricao}`)
-                  .join("; ")
+          const resumoItens = p.itens && p.itens.length > 0
+              ? p.itens.map((item) => `${item.quantidade}x ${item.descricao}`).join("; ")
               : "Sem detalhes disponíveis";
+
+          const statusLimpo = p.status ? p.status.trim().toUpperCase() : "";
+
+          let btnCancelar = "";
+          if (statusLimpo !== "ENVIADO" && statusLimpo !== "ENTREGUE" && statusLimpo !== "CANCELADO") {
+              btnCancelar = `
+                <button onclick="cancelarPedido(${p.id})" 
+                        style="margin-top: 10px; background: none; border: 1px solid #e74c3c; color: #e74c3c; padding: 4px 8px; border-radius: var(--radius-pill); cursor: pointer; width: 15%;">
+                    Cancelar Pedido
+                </button>`;
+          }
 
           return `
                 <div class="pedido-card">
@@ -289,6 +354,7 @@ async function carregarMeusPedidos() {
                     <div style="font-size: 0.85rem; margin: 5px 0; color: #555;">${resumoItens}</div>
                     <div style="font-weight: 600; color: var(--primary)">Total: R$ ${p.precoTotal.toFixed(2)}</div>
                     <div class="status-badge">${p.status}</div>
+                    ${btnCancelar}
                 </div>
                 `;
         })
@@ -296,7 +362,6 @@ async function carregarMeusPedidos() {
     }
   } catch (error) {
     console.error("Erro ao carregar pedidos:", error);
-    listaElement.innerHTML =
-      '<p class="empty-msg">Erro ao carregar pedidos.</p>';
+    listaElement.innerHTML = '<p class="empty-msg">Erro ao carregar pedidos.</p>';
   }
 }

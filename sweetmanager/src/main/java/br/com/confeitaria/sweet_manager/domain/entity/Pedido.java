@@ -59,20 +59,22 @@ public class Pedido {
         this.dataPedido = LocalDateTime.now();
     }
 
-    @PostLoad
+@PostLoad
     private void reconstruirPadroes() {
         if (this.status != null) {
-            this.statusAtual = switch (this.status) {
-                case "Em Preparação" -> new EmPreparacaoState();
-                case "Enviado" -> new EnviadoState();
-                case "Entregue" -> new EntregueState();
-                case "Cancelado" -> new CanceladoState();
+            String statusNormalizado = this.status.trim().toUpperCase();
+            
+            this.statusAtual = switch (statusNormalizado) {
+                case "EM PREPARAÇÃO", "EM PREPARACAO" -> new EmPreparacaoState();
+                case "ENVIADO" -> new EnviadoState();
+                case "ENTREGUE" -> new EntregueState();
+                case "CANCELADO" -> new CanceladoState();
                 default -> new RecebidoState();
             };
         }
 
         if (this.tipoEntrega != null) {
-            this.entrega = "DELIVERY".equals(this.tipoEntrega)
+            this.entrega = "DELIVERY".equalsIgnoreCase(this.tipoEntrega.trim())
                     ? new DeliveryProprio()
                     : new RetiradaNoLocal();
         }
@@ -91,11 +93,14 @@ public class Pedido {
         statusAtual.avancar(this);
     }
 
-
+    
     public void cancelarPedido() {
-        if ("Enviado".equals(this.status)) {
-            throw new IllegalStateException("Pedidos enviados não podem ser cancelados!");
+        String statusLimpo = this.status != null ? this.status.trim().toUpperCase() : "";
+        
+        if (statusLimpo.equals("ENVIADO") || statusLimpo.equals("ENTREGUE") || statusLimpo.equals("CANCELADO")) {
+            throw new IllegalStateException("Este pedido já avançou e não pode mais ser cancelado!");
         }
+        
         statusAtual.cancelar(this);
     }
 
