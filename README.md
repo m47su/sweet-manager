@@ -17,7 +17,7 @@ O **Sweet Manager** é um sistema de gerenciamento para uma confeitaria virtual,
 
 Antes de começar, você precisará ter instalado em sua máquina:
 * JDK 21
-* Docker e Docker Compose
+* Docker e Docker Compose (Certifique-se de que a sua máquina está habilitada para Virtualização)
 * Maven (opcional, caso use o `mvnw` incluso)
 
 ## ✅ Recomendações
