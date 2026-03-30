@@ -41,23 +41,8 @@ A criação do banco de dados `ConfeitariaDB` é totalmente automatizada via Doc
    ```bash
    docker-compose up -d
    ```
-   *Isso iniciará o servidor SQL Server e criará a base de dados automaticamente.*
+   *Isso iniciará o servidor SQL Server e criará a base de dados automaticamente e iniciar a aplicação.*
 
-### 2. Executar a Aplicação
-Utilize o Maven Wrapper incluído. Escolha o comando baseado no seu terminal:
-
-* **Windows (PowerShell ou CMD):**
-  ```powershell
-  .\mvnw spring-boot:run
-  ```
-* **Linux ou WSL (Terminal/Bash):**
-  ```bash
-  chmod +x mvnw && ./mvnw spring-boot:run
-  ```
-* **Caso algum problema com o maven wrapper ocorra, utilize o comando:**
-  ```powershell
-  \apache-maven-3.9.14\bin\mvn.cmd spring-boot:run
-  ```
 
 A aplicação estará disponível em **`http://localhost:8081`**.
 
