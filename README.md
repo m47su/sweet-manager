@@ -32,6 +32,7 @@ Siga os passos abaixo para rodar a aplicação localmente sem a necessidade de c
 ### 1. Subir o Banco de Dados (Docker)
 A criação do banco de dados `ConfeitariaDB` é totalmente automatizada via Docker.
 1. Certifique-se de que o Docker Desktop está aberto.
+   
 2. Certifique-se de estar na pasta raíz do projeto:
   ```powershell
   cd sweetmanager
