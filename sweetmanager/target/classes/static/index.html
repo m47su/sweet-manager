@@ -1,171 +1,267 @@
 <!doctype html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sweet Manager | Confeitaria Artesanal</title>
+    <link rel="stylesheet" href="assets/css/index.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sweet Manager | Confeitaria Artesanal</title>
-  <link rel="stylesheet" href="assets/css/index.css" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@700&display=swap"
-    rel="stylesheet" />
+  <body>
+    <header class="hero">
+      <div class="shape shape-top-left"></div>
+      <div class="shape shape-top-right"></div>
 
-</head>
+      <div class="topbar">
+        <div class="brand-title">Sweet Manager</div>
 
-<body>
-<header style="position: relative; padding: 20px;">
-    <div style="position: absolute; right: 20px; top: 10px; display: flex; align-items: center; gap: 15px;">
-        <span id="welcome-msg" style="color: rgb(0, 0, 0); font-weight: 600;"></span>
-        <form action="/logout" method="post" style="margin: 0;">
-            <button type="submit" style="background: rgba(255,255,255,0.2); color: rgb(0, 0, 0); border: 1px solid rgb(0, 0, 0); padding: 5px 12px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;">Sair</button>
-        </form>
-    </div>
-    <h1>Sweet Manager</h1>
-    <p>A doçura que você merece, do seu jeito.</p>
-</header>
+        <div class="topbar-right">
+          <span id="welcome-msg">Bem-vinda, fulana!</span>
 
-  <div class="main-container">
-    <!-- COLUNA ESQUERDA: FORMULÁRIO -->
-    <div class="card">
-      <h2>✨ Realizar Pedido</h2>
-
-      <div class="form-group">
-        <label for="tipoDoce">Tipo de Doce:</label>
-        <select id="tipoDoce" onchange="alternarCamposEspecificos()">
-          <option value="BOLO">🎂 Bolo</option>
-          <option value="BOMBOM">🍬 Bombom</option>
-        </select>
-      </div>
-
-      <div id="camposBolo">
-        <div class="form-group">
-          <label for="baseBolo">Base do Bolo:</label>
-          <select id="baseBolo">
-            <option value="BOLO_CHOCOLATE">Bolo de Chocolate Base</option>
-            <option value="BOLO_MORANGO">Bolo de Morango Base</option>
-            <option value="BOLO_LIMAO">Bolo de Limão Base</option>
-            <option value="BOLO_LEITE_NINHO">Bolo de Leite Ninho Base</option>
-            <option value="BOLO_FLORESTA_NEGRA">
-              Bolo de Floresta Negra Base
-            </option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="recheioBolo">Deseja modificar o recheio do bolo?</label>
-          <select id="recheioBolo">
-            <option value="Padrão">Continuar com o recheio padrão</option>
-            <option value="Chocolate Belga">Brigadeiro</option>
-            <option value="Limão">Mousse de Limão</option>
-            <option value="Morango">Morango</option>
-            <option value="Ninho">Creme de Ninho</option>
-            <option value="Cereja">Chantilly e Cereja</option>
-          </select>
+          <form action="/logout" method="post">
+            <button type="submit" class="logout-btn">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="M10 17l5-5-5-5v3H3v4h7v3zm9-14H9a2 2 0 0 0-2 2v3h2V5h10v14H9v-3H7v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"
+                />
+              </svg>
+              <span>Sair</span>
+            </button>
+          </form>
         </div>
       </div>
 
-      <div id="camposBombom" style="display: none">
+      <div class="hero-content">
+        <h1 class="titulo-principal">Personalize seu bolo</h1>
+      </div>
+    </header>
+
+    <main class="main-container">
+      <section class="card form-card">
+        <h2>Realizar pedido</h2>
+
         <div class="form-group">
-          <label for="baseBombom">Tipo de Bombom:</label>
-          <select id="baseBombom">
-            <option value="BOMBOM_CHOCOLATE">Bombom de Chocolate</option>
-            <option value="BOMBOM_MORANGO">Bombom de Morango</option>
-            <option value="BOMBOM_LIMAO">Bombom de Limão</option>
-            <option value="BOMBOM_MARACUJA">Bombom de Maracujá</option>
-            <option value="BOMBOM_LEITE_NINHO">Bombom de Leite Ninho</option>
-            <option value="BOMBOM_CEREJA">Bombom de Cereja</option>
+          <label for="tipoDoce">Tipo de doce</label>
+          <select id="tipoDoce" onchange="alternarCamposEspecificos()">
+            <option value="BOLO">Bolo</option>
+            <option value="BOMBOM">Bombom</option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="chocolateBombom">Deseja modificar o chocolate do bombom?</label>
-          <select id="chocolateBombom">
-            <option value="Padrão">Continuar com o chocolate padrão</option>
-            <option value="Ao Leite">Ao Leite</option>
-            <option value="Branco">Branco</option>
-            <option value="Meio Amargo">Meio Amargo</option>
-            <option value="Amargo">Amargo</option>
-          </select>
+
+        <div id="camposBolo">
+          <div class="form-group">
+            <label for="baseBolo">Tipo de massa</label>
+            <select id="baseBolo">
+              <option value="BOLO_CHOCOLATE">Bolo de Chocolate Base</option>
+              <option value="BOLO_MORANGO">Bolo de Morango Base</option>
+              <option value="BOLO_LIMAO">Bolo de Limão Base</option>
+              <option value="BOLO_LEITE_NINHO">Bolo de Leite Ninho Base</option>
+              <option value="BOLO_FLORESTA_NEGRA">
+                Bolo de Floresta Negra Base
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="recheioBolo">Deseja modificar o recheio do bolo?</label>
+            <select id="recheioBolo">
+              <option value="Padrão">Continuar com o recheio padrão</option>
+              <option value="Chocolate Belga">Brigadeiro</option>
+              <option value="Limão">Mousse de Limão</option>
+              <option value="Morango">Morango</option>
+              <option value="Ninho">Creme de Ninho</option>
+              <option value="Cereja">Chantilly e Cereja</option>
+            </select>
+          </div>
         </div>
-      </div>
 
-      <!-- BOX DE DESCRIÇÃO (Prototype Pattern Data) -->
-      <div class="description-box" id="info-produto">
-        Selecione uma base para ver os detalhes...
-      </div>
+        <div id="camposBombom" style="display: none">
+          <div class="form-group">
+            <label for="baseBombom">Tipo de bombom</label>
+            <select id="baseBombom">
+              <option value="BOMBOM_CHOCOLATE">Bombom de Chocolate</option>
+              <option value="BOMBOM_MORANGO">Bombom de Morango</option>
+              <option value="BOMBOM_LIMAO">Bombom de Limão</option>
+              <option value="BOMBOM_MARACUJA">Bombom de Maracujá</option>
+              <option value="BOMBOM_LEITE_NINHO">Bombom de Leite Ninho</option>
+              <option value="BOMBOM_CEREJA">Bombom de Cereja</option>
+            </select>
+          </div>
 
-      <div class="form-group">
-        <h4 id="titulo-topos">Topos Adicionais (+R$5 cada):</h3>
+          <div class="form-group">
+            <label for="chocolateBombom"
+              >Deseja modificar o chocolate do bombom?</label
+            >
+            <select id="chocolateBombom">
+              <option value="Padrão">Continuar com o chocolate padrão</option>
+              <option value="Ao Leite">Ao Leite</option>
+              <option value="Branco">Branco</option>
+              <option value="Meio Amargo">Meio Amargo</option>
+              <option value="Amargo">Amargo</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="description-box" id="info-produto">
+          Selecione uma base para ver os detalhes...
+        </div>
+
+        <div class="form-group">
+          <h4 id="titulo-topos">Tipos adicionais (+R$ 1,00 cada):</h4>
           <div class="topo-grid">
-            <label class="topo-item"><input type="checkbox" class="topo-opcao" value="Morango" />
-              Morango</label>
-            <label class="topo-item"><input type="checkbox" class="topo-opcao" value="Confete" />
-              Confete</label>
-            <label class="topo-item"><input type="checkbox" class="topo-opcao" value="M&M" />
-              M&M</label>
-            <label class="topo-item"><input type="checkbox" class="topo-opcao" value="Cereja" />
-              Cereja</label>
+            <label class="topo-item">
+              <input type="checkbox" class="topo-opcao" value="Morango" />
+              Morango
+            </label>
+
+            <label class="topo-item">
+              <input type="checkbox" class="topo-opcao" value="Confete" />
+              Confete
+            </label>
+
+            <label class="topo-item">
+              <input type="checkbox" class="topo-opcao" value="M&M" />
+              M&amp;M
+            </label>
+
+            <label class="topo-item">
+              <input type="checkbox" class="topo-opcao" value="Cereja" />
+              Cereja
+            </label>
           </div>
-      </div>
-
-      <div class="form-group">
-        <label for="emabalagem">Deseja adicionar embalagem para presente? (R$8,50)</label>
-        <label class="embalagem"><input type="checkbox" class="embalagem" value="EMBALAGEM" /> Sim,
-          desejo adicionar embalagem para presente.</label>
-      </div>
-
-      <div class="form-group">
-        <label for="quantidade">Quantidade:</label>
-        <input type="number" id="quantidade" name="quantidade" min="0" max="10" step="1" value="1" />
-      </div>
-
-      <button class="btn-add" onclick="adicionarAoCarrinho()">
-        + Adicionar ao Pedido
-      </button>
-
-      <div style="display: flex; gap: 10px; margin-top: 10px; height: 40px;">
-        <button class="btn-rascunho" onclick="salvarEstadoAtual()" style="background-color: #f39c12; flex: 1;">
-          💾 Salvar Rascunho
-        </button>
-        <button class="btn-restaurar" onclick="restaurarUltimoEstado()" style="background-color: #95a5a6; flex: 1; height: 40px;">
-          ↩️ Restaurar Anterior
-        </button>
-      </div>
-    </div>
-
-    <!-- COLUNA DIREITA: CARRINHO E MEUS PEDIDOS -->
-    <div class="column-right">
-      <div class="card" style="margin-bottom: 30px">
-        <h3>🛒 Resumo do Pedido</h3>
-        <ul id="lista-carrinho" class="cart-list">
-          <p class="empty-msg">Nenhum item adicionado ainda.</p>
-        </ul>
-
-        <hr style="border: 0; border-top: 1px solid #eee" />
+        </div>
 
         <div class="form-group">
-          <label>Opção de Entrega:</label>
-          <div class="radio-group">
-            <label><input type="radio" name="entrega" value="RETIRADA" checked />
-              Retirada</label>
-            <label><input type="radio" name="entrega" value="DELIVERY" /> Delivery
-              (+R$15)</label>
+          <label for="embalagem-check"
+            >Deseja adicionar embalagem para presente? (R$ 8,50)</label
+          >
+          <label class="embalagem">
+            <input
+              type="checkbox"
+              id="embalagem-check"
+              class="embalagem"
+              value="EMBALAGEM"
+            />
+            Sim, desejo adicionar embalagem para presente.
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label for="quantidade">Quantidade?</label>
+          <input
+            type="number"
+            id="quantidade"
+            name="quantidade"
+            min="0"
+            max="10"
+            step="1"
+            value="1"
+          />
+        </div>
+
+        <button class="btn-add" onclick="adicionarAoCarrinho()">
+          + Adicionar ao pedido
+        </button>
+
+        <div class="acoes-secundarias">
+          <button class="btn-rascunho" onclick="salvarEstadoAtual()">
+            Salvar rascunho
+          </button>
+
+          <button class="btn-restaurar" onclick="restaurarUltimoEstado()">
+            Restaurar anterior
+          </button>
+        </div>
+      </section>
+
+      <section class="column-right">
+        <div class="card resumo-card">
+          <h3>Resumo do pedido</h3>
+
+          <ul id="lista-carrinho" class="cart-list">
+            <p class="empty-msg">Nenhum item adicionado ainda.</p>
+          </ul>
+
+          <hr />
+
+          <div class="form-group">
+            <label>Opção de Entrega:</label>
+            <div class="radio-group">
+              <label>
+                <input type="radio" name="entrega" value="RETIRADA" checked />
+                Retirada
+              </label>
+
+              <label>
+                <input type="radio" name="entrega" value="DELIVERY" />
+                Delivery (+R$15)
+              </label>
+            </div>
+          </div>
+
+          <button class="btn-finalizar" onclick="finalizarPedido()">
+            Finalizar compra
+          </button>
+        </div>
+
+        <div class="card pedidos-card">
+          <h3>Meus pedidos recentes</h3>
+          <div id="lista-pedidos" class="pedidos-container">
+            <p class="empty-msg">Carregando seus pedidos...</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <section class="loja-section">
+      <div class="loja-container">
+        <div class="loja-header">
+          <img src="assets/img/morango1.png" class="morango-decor-esquerda" />
+
+          <div class="loja-header-texto">
+            <h2>Conheça nossa loja</h2>
+            <p>E adoce sua vida ainda mais</p>
           </div>
         </div>
 
-        <button class="btn-finalizar" onclick="finalizarPedido()">
-          Finalizar Compra
-        </button>
-      </div>
+        <div class="loja-box">
+          <div class="loja-info">
+            <p><strong>E-mail:</strong> sweetyl@sweet.com</p>
+            <p><strong>Telefone:</strong> (75) 9 8983-0038</p>
+            <p><strong>Instagram:</strong> @sweetyourlife</p>
+          </div>
 
-      <div class="card">
-        <h3>🛍️ Meus Pedidos Recentes</h3>
-        <div id="lista-pedidos" class="pedidos-container">
-          <p class="empty-msg">Carregando seus pedidos...</p>
+          <div class="mapa-box">
+            <iframe
+              title="Mapa da loja Sweet Manager"
+              src="https://www.google.com/maps?q=Santo%20Ant%C3%B4nio%20de%20Jesus%20BA&z=15&output=embed"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            >
+            </iframe>
+
+            <img
+              src="assets/img/morango2.png"
+              alt="Morango decorativo"
+              class="morango-mapa"
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <script src="assets/js/index.js"></script>
-</body>
+    <footer class="site-footer">
+      <p>Copyright © 2026 Todos os direitos reservados - SweetManager</p>
+    </footer>
 
+    <script src="assets/js/index.js"></script>
+  </body>
 </html>

@@ -1,64 +1,122 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Painel Administrativo | Sweet Manager</title>
-    <link rel="stylesheet" href="assets/css/index.css">
-    <style>
-        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        .column { background: #f4f4f4; padding: 10px; border-radius: 8px; min-height: 400px; }
-        .column h3 { text-align: center; border-bottom: 2px solid #ff4d8d; padding-bottom: 5px; }
-        .order-card { background: white; margin: 10px 0; padding: 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .btn-action { width: 100%; margin-top: 5px; cursor: pointer; }
-    </style>
-</head>
-<body>
-<header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-    <h1>Painel de Controle - Sweet Manager</h1>
-    <div style="display: flex; align-items: center; gap: 20px;">
-        <span id="welcome-msg" style="font-weight: bold; color: #ff4d8d;"></span>
-        <form action="/logout" method="post">
-            <button type="submit" style="background: #ff4d4d; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold;">🚪 Sair</button>
-        </form>
-    </div>
-</header>
+    <link rel="stylesheet" href="assets/css/admin.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <nav class="topbar">
+        <div class="logo-title">Sweet Manager - Painel de Controle</div>
 
-<div class="main-container" style="max-width: 95vw; margin-top: 20px;">
-    <section class="card" style="margin-bottom: 20px; padding: 20px; background: #fff5f8; border: 1px dashed #ff4d8d;">
-        <h3 style="color: #ff4d8d; margin-top: 0;">➕ Cadastrar Novo Administrador</h3>
-        <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;">
-            <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
-                <label>Nome:</label>
-                <input type="text" id="novo-admin-nome" placeholder="Nome do Admin" style="width: 100%; padding: 8px;">
-            </div>
-            <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
-                <label>E-mail:</label>
-                <input type="email" id="novo-admin-email" placeholder="email@sweet.com" style="width: 100%; padding: 8px;">
-            </div>
-            <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
-                <label>Senha:</label>
-                <input type="password" id="novo-admin-senha" placeholder="Senha segura" style="width: 100%; padding: 8px;">
-            </div>
-            <button onclick="cadastrarAdmin()" style="background: #ff4d8d; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">
-                Salvar Admin
+        <div class="topbar-right">
+          <span id="welcome-msg" class="welcome-msg"></span>
+
+          <form action="/logout" method="post">
+            <button type="submit" class="logout-btn">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="#fb4e4e"
+              >
+                <path
+                  d="M10 17l5-5-5-5v3H3v4h7v3zm9-14H9a2 2 0 0 0-2 2v3h2V5h10v14H9v-3H7v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"
+                />
+              </svg>
+
+              <span>Sair</span>
             </button>
+          </form>
         </div>
-    </section>
+      </nav>
 
-    <div class="admin-grid">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+
+      <div class="hero-content">
+        <h1>Cadastrar novo administrador</h1>
+        <p>Junte-se com mais pessoas para adoçar vidas!</p>
+
+        <section class="admin-form-card">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="novo-admin-nome">Nome</label>
+              <input
+                type="text"
+                id="novo-admin-nome"
+                placeholder="nome do novo admin"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="novo-admin-email">E-mail</label>
+              <input
+                type="email"
+                id="novo-admin-email"
+                placeholder="email@sweet.com"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="novo-admin-senha">Senha</label>
+              <div class="password-wrap">
+                <input
+                  type="password"
+                  id="novo-admin-senha"
+                  placeholder="insira uma senha segura"
+                />
+                <span class="eye-icon">◉</span>
+              </div>
+            </div>
+
+            <div class="form-group button-group">
+              <button
+                type="button"
+                class="create-btn"
+                onclick="cadastrarAdmin()"
+              >
+                Criar
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </header>
+
+    <main class="orders-section">
+      <div class="shape soft-shape soft-1"></div>
+      <div class="shape soft-shape soft-2"></div>
+      <div class="shape soft-shape soft-3"></div>
+      <div class="shape soft-shape soft-4"></div>
+
+      <h2>Pedidos</h2>
+
+      <div class="admin-grid">
+        <div class="column" id="col-Recebido">
+          <h3>Recebidos</h3>
         </div>
-</div>
-    
-    <div class="main-container" style="max-width: 95vw;">
-        <div class="admin-grid">
-            <div class="column" id="col-Recebido"><h3>📥 Recebidos</h3></div>
-            <div class="column" id="col-EmPreparacao"><h3>👨‍🍳 Em Preparação</h3></div>
-            <div class="column" id="col-Enviado"><h3>🚚 Prontos para entrega/retirada</h3></div>
-            <div class="column" id="col-Entregue"><h3>✅ Entregues</h3></div>
-            <div class="column" id="col-Cancelado"><h3>❌ Cancelados</h3></div>
+
+        <div class="column" id="col-EmPreparacao">
+          <h3>Em preparação</h3>
         </div>
-    </div>
+
+        <div class="column" id="col-Enviado">
+          <h3>Para entrega</h3>
+        </div>
+
+        <div class="column" id="col-Entregue">
+          <h3>Entregues</h3>
+        </div>
+
+        <div class="column" id="col-Cancelado">
+          <h3>Cancelados</h3>
+        </div>
+      </div>
+    </main>
 
     <script src="assets/js/admin.js"></script>
-</body>
+  </body>
 </html>

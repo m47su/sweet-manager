@@ -1,18 +1,18 @@
-  const canalComunicacao = new BroadcastChannel("sweet_manager_updates");
+const canalComunicacao = new BroadcastChannel("sweet_manager_updates");
 
-  canalComunicacao.onmessage = (evento) => {
-    if (evento.data === "atualizar_pedidos") {
-      console.log("Atualizando pedidos por comando do ADM...");
-      carregarMeusPedidos();
-    }
-  };
+canalComunicacao.onmessage = (evento) => {
+  if (evento.data === "atualizar_pedidos") {
+    console.log("Atualizando pedidos por comando do ADM...");
+    carregarMeusPedidos();
+  }
+};
 
-  async function carregarInfoUsuario() {
-    const response = await fetch("/usuarios/me");
-    if (response.ok) {
-        const user = await response.json();
-        document.getElementById("welcome-msg").innerText = `Olá, ${user.nome}! 👋`;
-    }
+async function carregarInfoUsuario() {
+  const response = await fetch("/usuarios/me");
+  if (response.ok) {
+    const user = await response.json();
+    document.getElementById("welcome-msg").innerText = `Olá, ${user.nome}!`;
+  }
 }
 
 async function salvarEstadoAtual() {
@@ -224,7 +224,6 @@ function removerDoCarrinho(index) {
   renderizarCarrinho();
 }
 
-
 async function finalizarPedido() {
   if (itensPedido.length === 0) {
     alert("Adicione pelo menos um item ao seu carrinho!");
@@ -252,7 +251,7 @@ async function finalizarPedido() {
       itensPedido = [];
       renderizarCarrinho();
       carregarMeusPedidos();
-      canalComunicacao.postMessage('atualizar_pedidos');
+      canalComunicacao.postMessage("atualizar_pedidos");
     } else {
       alert("Ocorreu um erro ao processar seu pedido.");
     }
